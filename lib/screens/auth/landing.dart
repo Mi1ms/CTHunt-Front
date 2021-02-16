@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ct_hunt/data/images.dart';
@@ -8,8 +7,8 @@ import 'package:ct_hunt/utils/size_config.dart';
 import 'package:ct_hunt/widgets/DefaultButton.dart';
 import 'package:ct_hunt/widgets/DefaultText.dart';
 
-class Home extends StatelessWidget {
-  static const routeName = "/home";
+class Landing extends StatelessWidget {
+  static const routeName = "/landing";
   @override
   Widget build(BuildContext context) {
     return Scaffold(

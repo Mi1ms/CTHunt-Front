@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ct_hunt/data/colors.dart';
-import 'package:ct_hunt/screens/auth/home.dart';
+import 'package:ct_hunt/screens/riddle/home.dart';
+import 'package:ct_hunt/screens/auth/landing.dart';
 import 'package:ct_hunt/screens/auth/signIn.dart';
 import 'package:ct_hunt/screens/auth/signUp.dart';
 import 'package:ct_hunt/utils/size_config.dart';
@@ -21,9 +21,10 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             home: Home(),
             routes: {
-              Home.routeName: (context) => Home(),
+              Landing.routeName: (context) => Landing(),
               SignUp.routeName: (context) => SignUp(),
               SignIn.routeName: (context) => SignIn(),
+              Home.routeName: (context) => Home(),
             },
           );
         },
