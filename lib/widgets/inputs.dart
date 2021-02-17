@@ -56,6 +56,7 @@ class CommonInput extends StatelessWidget {
             color: DefaultColors.dark,
             fontSize: 1.96 * SizeConfig.textMultiplier,
             fontWeight: FontWeight.w500,
+            obscureText: obscureText,
             inputDecoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,

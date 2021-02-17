@@ -27,11 +27,12 @@ class _SignInState extends State<SignIn> {
     String identifier = _identifierController.text.trim();
     String password = _passwordController.text.trim();
     Map<String, dynamic> data = {"identifier": identifier, "password": password};
-
     try {
       await Auth.login(data);
       Get.offAllNamed(Home.routeName);
-    } on dio.DioError catch (e) {}
+    } on dio.DioError catch (e) {
+      print(e.message);
+    }
   }
 
 

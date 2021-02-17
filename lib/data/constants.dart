@@ -7,4 +7,5 @@ class Constants {
   static const String IS_AUTH = "is_auth";
   static const String TOKEN = "token";
   static const String USER = "user";
+  static const String API_BASE_URL = "http://10.0.2.2:4242";
 }

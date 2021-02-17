@@ -1,3 +1,4 @@
+import 'package:ct_hunt/services/api/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
                 scaffoldBackgroundColor: Colors.white
             ),
-            home: Landing(),
+            home: Auth.isAuth() ? Home() : Landing(),
             routes: {
               Landing.routeName: (context) => Landing(),
               SignUp.routeName: (context) => SignUp(),
