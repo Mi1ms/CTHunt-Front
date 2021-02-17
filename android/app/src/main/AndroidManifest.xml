@@ -9,7 +9,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="ct_hunt"
+        android:label="CTHunt"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

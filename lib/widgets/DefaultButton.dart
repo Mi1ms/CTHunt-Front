@@ -53,7 +53,7 @@ class DefaultButton extends StatelessWidget {
               BorderRadius.circular(4.29 * SizeConfig.heightMultiplier),
         ),
         child: Container(
-          padding: padding ?? EdgeInsets.symmetric(vertical: 1.84 * SizeConfig.heightMultiplier),
+          padding: padding ?? EdgeInsets.symmetric(vertical: 24),
           child: child ??
               DefaultText(
                 value: uppercase ? value.toUpperCase() : value,
