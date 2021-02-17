@@ -8,6 +8,7 @@ void main() => runApp(Play());
 
 class Play extends StatelessWidget {
   static const String routeName = '/mission';
+  String description = 'Une enigme...';
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,9 @@ class Play extends StatelessWidget {
                       margin: EdgeInsets.only(
                           top: 7.35 * SizeConfig.heightMultiplier),
                       fontWeight: FontWeight.bold,
+                    ),
+                    DefaultText(
+                      value: description,
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
