@@ -1,14 +1,22 @@
+<<<<<<< HEAD
 import 'package:ct_hunt/screens/play/play.dart';
+=======
+import 'package:ct_hunt/services/api/auth.dart';
+>>>>>>> main
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ct_hunt/data/colors.dart';
-import 'package:ct_hunt/screens/auth/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ct_hunt/screens/riddle/home.dart';
+import 'package:ct_hunt/screens/auth/landing.dart';
 import 'package:ct_hunt/screens/auth/signIn.dart';
 import 'package:ct_hunt/screens/auth/signUp.dart';
 import 'package:ct_hunt/screens/play/success.dart';
 import 'package:ct_hunt/utils/size_config.dart';
+import 'package:ct_hunt/data/constants.dart';
 
-void main() {
+main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Constants.preferences = await SharedPreferences.getInstance();
   runApp(MyApp());
 }
 
@@ -21,14 +29,21 @@ class MyApp extends StatelessWidget {
           SizeConfig().init(constraints, orientation);
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            home: Home(),
+            theme: ThemeData(
+                scaffoldBackgroundColor: Colors.white
+            ),
+            home: Auth.isAuth() ? Home() : Landing(),
             routes: {
-              Home.routeName: (context) => Home(),
+              Landing.routeName: (context) => Landing(),
               SignUp.routeName: (context) => SignUp(),
               SignIn.routeName: (context) => SignIn(),
+<<<<<<< HEAD
               // Playing quest
               Success.routeName: (context) => Success(),
               Play.routeName: (context) => Play(),
+=======
+              Home.routeName: (context) => Home(),
+>>>>>>> main
             },
           );
         },
