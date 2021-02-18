@@ -37,13 +37,9 @@ class MyApp extends StatelessWidget {
               Landing.routeName: (context) => Landing(),
               SignUp.routeName: (context) => SignUp(),
               SignIn.routeName: (context) => SignIn(),
-<<<<<<< HEAD
-              // Playing quest
+              Home.routeName: (context) => Home(),
               Success.routeName: (context) => Success(),
               Play.routeName: (context) => Play(),
-=======
-              Home.routeName: (context) => Home(),
->>>>>>> main
             },
           );
         },
