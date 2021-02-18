@@ -62,10 +62,10 @@ class Play extends StatelessWidget {
                         Padding(
                           child: RaisedButton(
                               onPressed: () async {
-                                print('camera');
                                 File image = await ImagePicker.pickImage(
                                     source: ImageSource.camera,
                                     imageQuality: 50);
+                                // print('camera'. image);
                               },
                               child: Icon(Icons.camera)),
                           padding: EdgeInsets.symmetric(
