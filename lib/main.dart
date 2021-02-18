@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 import 'package:ct_hunt/screens/play/play.dart';
-=======
 import 'package:ct_hunt/services/api/auth.dart';
->>>>>>> main
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,9 +26,7 @@ class MyApp extends StatelessWidget {
           SizeConfig().init(constraints, orientation);
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-                scaffoldBackgroundColor: Colors.white
-            ),
+            theme: ThemeData(scaffoldBackgroundColor: Colors.white),
             home: Auth.isAuth() ? Home() : Landing(),
             routes: {
               Landing.routeName: (context) => Landing(),
