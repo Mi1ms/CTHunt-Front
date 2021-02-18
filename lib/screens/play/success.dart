@@ -1,31 +1,28 @@
-import 'dart:ffi';
-
 import 'package:ct_hunt/widgets/DefaultText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
-void main() => runApp(Success());
 
 class Success extends StatelessWidget {
   static const String routeName = '/success';
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Succès !',
-      home: Scaffold(
-        body: Container(
-            margin: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Image.network(
-                  'https://png.pngtree.com/png-clipart/20190604/original/pngtree-win-trophies-png-image_965183.jpg',
-                  width: 500,
-                  fit: BoxFit.cover,
-                ),
-                Notice()
-              ],
-            )),
+    return Scaffold(
+      appBar: AppBar(
+        title: DefaultText(value: "Success"),
+      ),
+      body: Container(
+          margin: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Image.network(
+                'https://png.pngtree.com/png-clipart/20190604/original/pngtree-win-trophies-png-image_965183.jpg',
+                width: 500,
+                fit: BoxFit.cover,
+              ),
+              Notice()
+            ],
+          )
       ),
     );
   }
@@ -93,6 +90,7 @@ class _NoticeFormState extends State<Notice> {
               size: 20,
             ),
           )
-        ]));
+        ])
+    );
   }
 }

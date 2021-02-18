@@ -24,10 +24,11 @@ class Landing extends StatelessWidget {
             fontWeight: FontWeight.w900,
             color: DefaultColors.dark,
             margin: EdgeInsets.only(top: 80),
-
           ),
           Image.asset(Images.homeIllustration,
-              width: double.infinity, height: 400),
+              width: double.infinity,
+              height: 400
+          ),
           Container(
             margin: EdgeInsets.only(bottom: 20),
             child: Column(

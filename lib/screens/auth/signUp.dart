@@ -2,7 +2,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:ct_hunt/screens/auth/signIn.dart';
-import 'package:ct_hunt/screens/riddle/home.dart';
+import 'package:ct_hunt/screens/quest/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ct_hunt/widgets/inputs.dart';
 import 'package:ct_hunt/widgets/DefaultButton.dart';

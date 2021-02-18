@@ -1,10 +1,11 @@
-import 'package:ct_hunt/screens/play/play.dart';
-import 'package:ct_hunt/services/api/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ct_hunt/screens/riddle/home.dart';
+import 'package:ct_hunt/screens/quest/home.dart';
 import 'package:ct_hunt/screens/auth/landing.dart';
+import 'package:ct_hunt/services/api/auth.dart';
+import 'package:ct_hunt/screens/quest/add.dart';
+import 'package:ct_hunt/screens/play/play.dart';
 import 'package:ct_hunt/screens/auth/signIn.dart';
 import 'package:ct_hunt/screens/auth/signUp.dart';
 import 'package:ct_hunt/screens/play/success.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
               SignUp.routeName: (context) => SignUp(),
               SignIn.routeName: (context) => SignIn(),
               Home.routeName: (context) => Home(),
+              AddRiddle.routeName: (context) => AddRiddle(),
               Success.routeName: (context) => Success(),
               Play.routeName: (context) => Play(),
             },

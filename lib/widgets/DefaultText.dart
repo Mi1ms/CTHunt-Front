@@ -1,3 +1,4 @@
+import 'package:ct_hunt/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
 class DefaultText extends StatelessWidget {
@@ -58,7 +59,7 @@ class DefaultText extends StatelessWidget {
           style: TextStyle(
               letterSpacing: letterSpacing,
               color: color,
-              fontSize: fontSize,
+              fontSize: fontSize ?? 1.96 * SizeConfig.textMultiplier,
               fontWeight: fontWeight,
               height: lineHeight
           )

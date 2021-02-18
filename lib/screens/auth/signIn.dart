@@ -3,7 +3,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ct_hunt/widgets/inputs.dart';
-import 'package:ct_hunt/screens/riddle/home.dart';
+import 'package:ct_hunt/screens/quest/home.dart';
 import 'package:ct_hunt/services/api/auth.dart';
 import 'package:ct_hunt/screens/auth/signUp.dart';
 import 'package:ct_hunt/widgets/DefaultButton.dart';
@@ -22,7 +22,6 @@ class _SignInState extends State<SignIn> {
   final _identifierController = TextEditingController();
   final _passwordController = TextEditingController();
 
-
   void login() async {
     String identifier = _identifierController.text.trim();
     String password = _passwordController.text.trim();
@@ -31,7 +30,6 @@ class _SignInState extends State<SignIn> {
       await Auth.login(data);
       Get.offAllNamed(Home.routeName);
     } on dio.DioError catch (e) {
-      print(e.message);
     }
   }
 

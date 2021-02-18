@@ -17,32 +17,34 @@ class CommonInput extends StatelessWidget {
   final bool obscureText;
   final Widget prefixIcon;
   final double fontSize;
+  final int maxLines;
 
   const CommonInput(
       {Key key,
-        this.controller,
-        this.inputType,
-        this.validator,
-        this.label = "",
-        this.obscureText = false,
-        this.margin = const EdgeInsets.all(0),
-        this.hint,
-        this.prefixIcon,
-        this.contentPadding,
-        this.fontSize,
-        this.hintStyle})
+      this.controller,
+      this.inputType,
+      this.validator,
+      this.label = "",
+      this.obscureText = false,
+      this.margin = const EdgeInsets.all(0),
+      this.hint,
+      this.prefixIcon,
+      this.contentPadding,
+      this.fontSize,
+      this.hintStyle,
+      this.maxLines})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Widget Label = label.isNotEmpty
         ? DefaultText(
-      value: label,
-      fontSize: fontSize ?? 1.96 * SizeConfig.textMultiplier,
-      alignment: Alignment.centerLeft,
-      margin: EdgeInsets.only(bottom: 6),
-      color: DefaultColors.dark.withOpacity(0.8),
-    )
+            value: label,
+            fontSize: fontSize ?? 1.96 * SizeConfig.textMultiplier,
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(bottom: 0.98 * SizeConfig.heightMultiplier),
+            color: DefaultColors.dark.withOpacity(0.8),
+          )
         : SizedBox();
 
     return Container(
@@ -57,6 +59,7 @@ class CommonInput extends StatelessWidget {
             fontSize: 1.96 * SizeConfig.textMultiplier,
             fontWeight: FontWeight.w500,
             obscureText: obscureText,
+            maxLines: maxLines,
             inputDecoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
@@ -64,8 +67,8 @@ class CommonInput extends StatelessWidget {
               hintStyle: hintStyle,
               contentPadding: contentPadding ??
                   EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 16
+                      horizontal: 2.31 * SizeConfig.widthMultiplier,
+                      vertical: 1.96 * SizeConfig.heightMultiplier
                   ),
               prefixIcon: prefixIcon,
             ),
@@ -94,7 +97,7 @@ class EmailInput extends StatelessWidget {
       margin: margin,
       validator: (String email) {
         bool emailIsValid = RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
             .hasMatch(email);
         if (email.isEmpty) {
           return 'Enter your email';
@@ -157,7 +160,6 @@ class UsernameInput extends StatelessWidget {
   }
 }
 
-
 class PasswordInput extends StatelessWidget {
   final TextEditingController controller;
   final EdgeInsets margin;
@@ -181,6 +183,36 @@ class PasswordInput extends StatelessWidget {
         }
         return null;
       },
+    );
+  }
+}
+
+class RiddleInput extends StatelessWidget {
+  final TextEditingController controller;
+  final EdgeInsets margin;
+  final int maxLines;
+  final String hint;
+  final Function(String value) validator;
+
+  const RiddleInput(
+      {Key key,
+      @required this.controller,
+      this.margin,
+      this.maxLines,
+      @required this.hint,
+      this.validator})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonInput(
+      controller: controller,
+      inputType: TextInputType.text,
+      hint: hint,
+      margin: margin,
+      maxLines: maxLines,
+      validator: validator,
+      contentPadding: EdgeInsets.all(0),
     );
   }
 }

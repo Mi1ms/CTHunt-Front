@@ -1,10 +1,12 @@
-import 'package:ct_hunt/widgets/DefaultText.dart';
+import 'package:ct_hunt/screens/quest/add.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_popup/extension_api.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
+import 'package:get/get.dart';
 import 'package:latlong/latlong.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:ct_hunt/widgets/DefaultText.dart';
 
 class MarkerPopUp extends StatefulWidget {
   final Marker marker;
@@ -32,15 +34,6 @@ class _MarkerPopUpState extends State<MarkerPopUp> {
         new Coordinates(_marker.point.latitude, _marker.point.longitude);
     List<Address> addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
-
-    print("addressLine-------------->${addresses.first.addressLine}");
-    print("locality-------------->${addresses.first.locality}");
-    print("featureName-------------->${addresses.first.featureName}");
-    print("thoroughfare-------------->${addresses.first.thoroughfare}");
-    print("adminArea-------------->${addresses.first.adminArea}");
-    print("countryCode-------------->${addresses.first.countryCode}");
-    print("countryName-------------->${addresses.first.countryName}");
-    print("postalCode-------------->${addresses.first.postalCode}");
 
     setState(() {
       _address = addresses.first;
@@ -126,11 +119,15 @@ class _HomeState extends State<Home> {
         zoom: 13.0,
         plugins: [PopupMarkerPlugin()],
         onTap: (_) => _popupLayerController.hidePopup(),
+        onLongPress: (LatLng position ) {
+            Get.toNamed(AddRiddle.routeName, arguments: PositionArguments(latitude: position.latitude, longitude: position.longitude));
+        }
       ),
       layers: [
         TileLayerOptions(
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c']),
+            subdomains: ['a', 'b', 'c']
+        ),
         PopupMarkerLayerOptions(
           markers: _markers,
           popupSnap: PopupSnap.top,
