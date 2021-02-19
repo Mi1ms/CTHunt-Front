@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_popup/extension_api.dart';
@@ -8,25 +9,50 @@ import 'package:latlong/latlong.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:ct_hunt/utils/size_config.dart';
 import 'package:ct_hunt/screens/quest/add.dart';
+import 'package:ct_hunt/screens/quest/play.dart';
 import 'package:ct_hunt/widgets/CircularProgress.dart';
 import 'package:ct_hunt/data/model_parsers.dart';
 import 'package:ct_hunt/data/models.dart';
+import 'package:ct_hunt/data/colors.dart';
 import 'package:ct_hunt/services/api/quest.dart' as Api;
 import 'package:ct_hunt/widgets/DefaultText.dart';
 
-class MarkerPopUp extends StatefulWidget {
-  final Marker marker;
+class QuestInfo extends StatelessWidget {
+  final String label;
+  final String value;
 
-  const MarkerPopUp({Key key, this.marker}) : super(key: key);
+  const QuestInfo({Key key, this.label, this.value}) : super(key: key);
 
   @override
-  _MarkerPopUpState createState() => _MarkerPopUpState(this.marker);
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        DefaultText(
+          value: label,
+          fontWeight: FontWeight.w500,
+        ),
+        DefaultText(
+          value: value,
+        ),
+      ],
+    );
+  }
+}
+
+class MarkerPopUp extends StatefulWidget {
+  final Quest quest;
+
+  const MarkerPopUp({Key key, this.quest}) : super(key: key);
+
+  @override
+  _MarkerPopUpState createState() => _MarkerPopUpState(this.quest);
 }
 
 class _MarkerPopUpState extends State<MarkerPopUp> {
-  _MarkerPopUpState(this._marker);
+  _MarkerPopUpState(this._quest);
 
-  final Marker _marker;
+  Quest _quest;
   Address _address = Address();
 
   @override
@@ -37,47 +63,59 @@ class _MarkerPopUpState extends State<MarkerPopUp> {
 
   void getAddress() async {
     Coordinates coordinates =
-        new Coordinates(_marker.point.latitude, _marker.point.longitude);
-    List<Address> addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+        new Coordinates(_quest.latitude, _quest.longitude);
 
-    setState(() {
-      _address = addresses.first;
-    });
+    try {
+      List<Address> addresses =
+          await Geocoder.local.findAddressesFromCoordinates(coordinates);
+
+      setState(() {
+        _address = addresses.first;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget addressInfo = _address.addressLine != null
+        ? QuestInfo(label: "Address: ", value: _address.addressLine)
+        : SizedBox();
     return Card(
       child: Container(
-        padding: EdgeInsets.all(2.31 * SizeConfig.widthMultiplier),
-        constraints: BoxConstraints(
-            minWidth: 23.15 * SizeConfig.widthMultiplier,
-            maxWidth: 46.29 * SizeConfig.widthMultiplier),
+        padding: EdgeInsets.all(5.56 * SizeConfig.widthMultiplier),
+        width: 69.44 * SizeConfig.widthMultiplier,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(
-              "Popup for a marker!",
-              overflow: TextOverflow.fade,
-              softWrap: false,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 1.72 * SizeConfig.textMultiplier,
-              ),
-            ),
+            QuestInfo(label: "Title: ", value: _quest.title),
+            SizedBox(height: 12),
+            QuestInfo(label: "Level: ", value: _quest.level.capitalize),
             Padding(
                 padding: EdgeInsets.symmetric(
                     vertical: 0.49 * SizeConfig.heightMultiplier)),
-            DefaultText(
-              value: "Address:",
-            ),
-            Text(
-              "Marker size: ${_marker.width}, ${_marker.height}",
-              style: TextStyle(fontSize: 1.47 * SizeConfig.textMultiplier),
-            ),
+            addressInfo,
+            Center(
+              child: FittedBox(
+                child: InkWell(
+                  onTap: (){
+                    print(_quest.toString());
+                    Get.toNamed(Play.routeName, arguments: PlayArguments(quest: _quest));
+                  },
+                  child: DefaultText(
+                    value: "Let's go!",
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                    margin: EdgeInsets.only(top: 6),
+                    backgroundColor: DefaultColors.primary[600],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -109,10 +147,11 @@ class _HomeState extends State<Home> {
     try {
       dio.Response<dynamic> response = await Api.Quest.getAll();
       var data = response.data;
-      List<Quest> quests = parseQuests(data ["data"]);
+      List<Quest> quests = parseQuests(data["data"]);
       List<LatLng> points = quests
           .map((Quest quest) => LatLng(quest.latitude, quest.longitude))
-          .toList().cast<LatLng>();
+          .toList()
+          .cast<LatLng>();
       List<Marker> markers = points
           .map(
             (LatLng point) => Marker(
@@ -130,8 +169,7 @@ class _HomeState extends State<Home> {
         _markers = markers;
         _quests = quests;
       });
-    } on dio.DioError catch (e) {
-    }
+    } on dio.DioError catch (e) {}
   }
 
   @override
@@ -152,19 +190,22 @@ class _HomeState extends State<Home> {
             Get.toNamed(AddRiddle.routeName,
                 arguments: PositionArguments(
                     latitude: position.latitude,
-                    longitude: position.longitude));
+                    longitude: position.longitude
+                )
+            );
           }),
       layers: [
         TileLayerOptions(
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             subdomains: ['a', 'b', 'c']),
         PopupMarkerLayerOptions(
-          markers: _markers,
-          popupSnap: PopupSnap.top,
-          popupController: _popupLayerController,
-          popupBuilder: (BuildContext _, Marker marker) =>
-              MarkerPopUp(marker: marker),
-        ),
+            markers: _markers,
+            popupSnap: PopupSnap.top,
+            popupController: _popupLayerController,
+            popupBuilder: (BuildContext _, Marker marker) {
+              var index = _markers.indexOf(marker);
+              return MarkerPopUp(quest: _quests[index]);
+            }),
       ],
     );
   }

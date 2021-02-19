@@ -8,4 +8,5 @@ class Constants {
   static const String TOKEN = "token";
   static const String USER = "user";
   static const String API_BASE_URL = "http://10.0.2.2:4242";
+  static const GOOGLE_API_KEY = "AIzaSyBTb7kOmEr1PnhhdVB8AUSRllfYorxiqPY";
 }

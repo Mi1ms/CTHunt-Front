@@ -339,7 +339,7 @@ class _RiddleFormState extends State<RiddleForm> {
 }
 
 class AddRiddle extends StatefulWidget {
-  static const routeName = "/riddle/add";
+  static const routeName = "/quest/add";
 
   @override
   _AddRiddleState createState() => _AddRiddleState();
