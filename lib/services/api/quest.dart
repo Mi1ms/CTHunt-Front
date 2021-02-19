@@ -10,4 +10,10 @@ class Quest {
       ...ApiHeader.getAuthorization(),
     }) );
   }
+
+  static Future<Response> getAll() {
+    return Dio().get(_url, options: Options(headers: {
+      ...ApiHeader.getAuthorization(),
+    }) );
+  }
 }

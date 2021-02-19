@@ -20,17 +20,18 @@ class Landing extends StatelessWidget {
         children: [
           DefaultText(
             value: "CTHunt",
-            fontSize: 40,
+            fontSize: 4.91 * SizeConfig.textMultiplier,
             fontWeight: FontWeight.w900,
             color: DefaultColors.dark,
-            margin: EdgeInsets.only(top: 80),
+            margin: EdgeInsets.only(top: 9.81 * SizeConfig.heightMultiplier),
           ),
-          Image.asset(Images.homeIllustration,
+          Image.asset(
+              Images.homeIllustration,
               width: double.infinity,
-              height: 400
+              height: 49.01 * SizeConfig.heightMultiplier
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 20),
+            margin: EdgeInsets.only(bottom: 2.45 * SizeConfig.heightMultiplier),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -41,7 +42,8 @@ class Landing extends StatelessWidget {
                       Get.toNamed(SignIn.routeName);
                     },
                     margin: EdgeInsets.only(
-                        bottom: 3.68 * SizeConfig.heightMultiplier),
+                        bottom: 3.68 * SizeConfig.heightMultiplier
+                    ),
                   ),
                 ),
 
@@ -52,19 +54,12 @@ class Landing extends StatelessWidget {
                     },
                     child: DefaultText(
                       value: "Sign up".toUpperCase(),
-                      padding: EdgeInsets.symmetric(vertical: 24),
+                      padding: EdgeInsets.symmetric(vertical: 2.94 * SizeConfig.heightMultiplier),
                       color: DefaultColors.primary,
                       fontWeight:  FontWeight.w600,
-                      fontSize:2.21  * SizeConfig.textMultiplier,
+                      fontSize: 2.21  * SizeConfig.textMultiplier,
                     ),
                   ),
-
-                  // DefaultButton(
-                  //   value: "Sign up",
-                  //   onPress: () {
-                  //     Get.toNamed(SignUp.routeName);
-                  //   },
-                  // ),
                 ),
               ],
             ),

@@ -1,11 +1,17 @@
-import 'package:ct_hunt/screens/quest/add.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_popup/extension_api.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:latlong/latlong.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:ct_hunt/utils/size_config.dart';
+import 'package:ct_hunt/screens/quest/add.dart';
+import 'package:ct_hunt/widgets/CircularProgress.dart';
+import 'package:ct_hunt/data/model_parsers.dart';
+import 'package:ct_hunt/data/models.dart';
+import 'package:ct_hunt/services/api/quest.dart' as Api;
 import 'package:ct_hunt/widgets/DefaultText.dart';
 
 class MarkerPopUp extends StatefulWidget {
@@ -44,8 +50,10 @@ class _MarkerPopUpState extends State<MarkerPopUp> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        padding: const EdgeInsets.all(10),
-        constraints: BoxConstraints(minWidth: 100, maxWidth: 200),
+        padding: EdgeInsets.all(2.31 * SizeConfig.widthMultiplier),
+        constraints: BoxConstraints(
+            minWidth: 23.15 * SizeConfig.widthMultiplier,
+            maxWidth: 46.29 * SizeConfig.widthMultiplier),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -55,18 +63,20 @@ class _MarkerPopUpState extends State<MarkerPopUp> {
               "Popup for a marker!",
               overflow: TextOverflow.fade,
               softWrap: false,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 14.0,
+                fontSize: 1.72 * SizeConfig.textMultiplier,
               ),
             ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
+            Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: 0.49 * SizeConfig.heightMultiplier)),
             DefaultText(
               value: "Address:",
             ),
             Text(
               "Marker size: ${_marker.width}, ${_marker.height}",
-              style: const TextStyle(fontSize: 12.0),
+              style: TextStyle(fontSize: 1.47 * SizeConfig.textMultiplier),
             ),
           ],
         ),
@@ -83,51 +93,71 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final PopupController _popupLayerController = PopupController();
-  static final List<LatLng> _points = [
-    LatLng(48.856614, 2.3522219),
-    LatLng(43.3, 5.4),
-    LatLng(50.633333, 3.066667),
-  ];
-
   static const _markerSize = 50.0;
+  final PopupController _popupLayerController = PopupController();
+  List<LatLng> _points = [];
   List<Marker> _markers;
+  List<Quest> _quests;
 
   @override
   void initState() {
     super.initState();
+    getPoints();
+  }
 
-    _markers = _points
-        .map(
-          (LatLng point) => Marker(
-            point: point,
-            width: _markerSize,
-            height: _markerSize,
-            builder: (_) =>
-                Icon(Icons.location_pin, size: _markerSize, color: Colors.red),
-            anchorPos: AnchorPos.align(AnchorAlign.top),
-          ),
-        )
-        .toList();
+  void getPoints() async {
+    try {
+      dio.Response<dynamic> response = await Api.Quest.getAll();
+      var data = response.data;
+      List<Quest> quests = parseQuests(data ["data"]);
+      List<LatLng> points = quests
+          .map((Quest quest) => LatLng(quest.latitude, quest.longitude))
+          .toList().cast<LatLng>();
+      List<Marker> markers = points
+          .map(
+            (LatLng point) => Marker(
+              point: point,
+              width: _markerSize,
+              height: _markerSize,
+              builder: (_) => Icon(Icons.location_pin,
+                  size: _markerSize, color: Colors.red),
+              anchorPos: AnchorPos.align(AnchorAlign.top),
+            ),
+          )
+          .toList();
+      setState(() {
+        _points = points;
+        _markers = markers;
+        _quests = quests;
+      });
+    } on dio.DioError catch (e) {
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_points.length == 0)
+      return Scaffold(
+        body: Center(
+          child: CircularProgress(),
+        ),
+      );
     return FlutterMap(
       options: MapOptions(
-        center: _points.first,
-        zoom: 13.0,
-        plugins: [PopupMarkerPlugin()],
-        onTap: (_) => _popupLayerController.hidePopup(),
-        onLongPress: (LatLng position ) {
-            Get.toNamed(AddRiddle.routeName, arguments: PositionArguments(latitude: position.latitude, longitude: position.longitude));
-        }
-      ),
+          center: _points.first,
+          zoom: 13.0,
+          plugins: [PopupMarkerPlugin()],
+          onTap: (_) => _popupLayerController.hidePopup(),
+          onLongPress: (LatLng position) {
+            Get.toNamed(AddRiddle.routeName,
+                arguments: PositionArguments(
+                    latitude: position.latitude,
+                    longitude: position.longitude));
+          }),
       layers: [
         TileLayerOptions(
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c']
-        ),
+            subdomains: ['a', 'b', 'c']),
         PopupMarkerLayerOptions(
           markers: _markers,
           popupSnap: PopupSnap.top,

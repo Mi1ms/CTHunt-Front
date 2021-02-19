@@ -1,3 +1,4 @@
+import 'package:ct_hunt/utils/size_config.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
@@ -25,7 +26,10 @@ class _SignInState extends State<SignIn> {
   void login() async {
     String identifier = _identifierController.text.trim();
     String password = _passwordController.text.trim();
-    Map<String, dynamic> data = {"identifier": identifier, "password": password};
+    Map<String, dynamic> data = {
+      "identifier": identifier,
+      "password": password
+    };
     try {
       await Auth.login(data);
       Get.offAllNamed(Home.routeName);
@@ -33,20 +37,21 @@ class _SignInState extends State<SignIn> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
+            padding: EdgeInsets.symmetric(
+                horizontal: 7.41 * SizeConfig.widthMultiplier),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.only(top: 30),
+                  margin:
+                      EdgeInsets.only(top: 3.68 * SizeConfig.heightMultiplier),
                   child: GestureDetector(
                     onTap: () {
                       Get.back();
@@ -54,19 +59,20 @@ class _SignInState extends State<SignIn> {
                     child: Icon(
                       CupertinoIcons.back,
                       color: DefaultColors.dark,
-                      size: 32,
+                      size: 7.41 * SizeConfig.imageSizeMultiplier,
                     ),
                   ),
                 ),
                 DefaultText(
                   value: "Sign in",
-                  fontSize: 42,
+                  fontSize: 5.15 * SizeConfig.textMultiplier,
                   fontWeight: FontWeight.bold,
-                  margin: EdgeInsets.only(top: 50),
+                  margin:
+                      EdgeInsets.only(top: 6.13 * SizeConfig.heightMultiplier),
                   alignment: Alignment.centerLeft,
                   color: DefaultColors.dark,
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 6.13 * SizeConfig.heightMultiplier),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -74,11 +80,11 @@ class _SignInState extends State<SignIn> {
                       IdentifierInput(
                         controller: _identifierController,
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 2.45 * SizeConfig.heightMultiplier),
                       PasswordInput(
                         controller: _passwordController,
                       ),
-                      SizedBox(height: 150),
+                      SizedBox(height: 18.38 * SizeConfig.heightMultiplier),
                       DefaultButton(
                         value: "Sign in",
                         onPress: () {
@@ -89,9 +95,11 @@ class _SignInState extends State<SignIn> {
                       ),
                       DefaultText(
                         value: "Don't have an account?",
-                        fontSize: 18,
+                        fontSize: 2.21 * SizeConfig.textMultiplier,
                         color: DefaultColors.dark.withOpacity(0.8),
-                        margin: EdgeInsets.only(bottom: 10, top: 40),
+                        margin: EdgeInsets.only(
+                            bottom: 1.23 * SizeConfig.heightMultiplier,
+                            top: 4.91 * SizeConfig.heightMultiplier),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -99,7 +107,7 @@ class _SignInState extends State<SignIn> {
                         },
                         child: DefaultText(
                           value: "Sign up",
-                          fontSize: 18,
+                          fontSize: 2.21 * SizeConfig.textMultiplier,
                           color: DefaultColors.dark,
                           fontWeight: FontWeight.bold,
                         ),

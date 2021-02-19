@@ -1,3 +1,4 @@
+import 'package:ct_hunt/utils/size_config.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -41,13 +42,13 @@ class _SignUpState extends State<SignUp> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
+            padding: EdgeInsets.symmetric(horizontal: 7.41 * SizeConfig.widthMultiplier),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.only(top: 30),
+                  margin: EdgeInsets.only(top: 3.68 * SizeConfig.heightMultiplier),
                   child: GestureDetector(
                     onTap: () {
                       Get.back();
@@ -55,19 +56,19 @@ class _SignUpState extends State<SignUp> {
                     child: Icon(
                       CupertinoIcons.back,
                       color: DefaultColors.dark,
-                      size: 32,
+                      size: 7.41 * SizeConfig.imageSizeMultiplier,
                     ),
                   ),
                 ),
                 DefaultText(
                   value: "Sign up",
-                  fontSize: 42,
+                  fontSize: 5.15 * SizeConfig.textMultiplier,
                   fontWeight: FontWeight.bold,
-                  margin: EdgeInsets.only(top: 50),
+                  margin: EdgeInsets.only(top: 6.13 * SizeConfig.heightMultiplier),
                   alignment: Alignment.centerLeft,
                   color: DefaultColors.dark,
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 6.13 * SizeConfig.heightMultiplier),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -75,15 +76,15 @@ class _SignUpState extends State<SignUp> {
                       UsernameInput(
                         controller: _usernameController,
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 2.45 * SizeConfig.heightMultiplier),
                       EmailInput(
                         controller: _emailController,
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 2.45 * SizeConfig.heightMultiplier),
                       PasswordInput(
                         controller: _passwordController,
                       ),
-                      SizedBox(height: 150),
+                      SizedBox(height: 9.81 * SizeConfig.heightMultiplier),
                       DefaultButton(
                         value: "Sign up",
                         onPress: () {
@@ -94,9 +95,9 @@ class _SignUpState extends State<SignUp> {
                       ),
                       DefaultText(
                         value: "Already have an account?",
-                        fontSize: 18,
+                        fontSize: 2.21 * SizeConfig.textMultiplier,
                         color: DefaultColors.dark.withOpacity(0.8),
-                        margin: EdgeInsets.only(bottom: 10, top: 40),
+                        margin: EdgeInsets.only(bottom: 1.23* SizeConfig.heightMultiplier, top: 4.91 * SizeConfig.heightMultiplier),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -104,7 +105,7 @@ class _SignUpState extends State<SignUp> {
                         },
                         child: DefaultText(
                           value: "Sign in",
-                          fontSize: 18,
+                          fontSize: 2.21 * SizeConfig.textMultiplier,
                           color: DefaultColors.dark,
                           fontWeight: FontWeight.bold,
                         ),

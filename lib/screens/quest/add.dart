@@ -31,7 +31,7 @@ class SuccessView extends StatelessWidget {
       height: 48.71 * SizeConfig.heightMultiplier,
       child: DefaultText(
         value: "Successfully created your quest",
-        fontSize: 3.25 * SizeConfig.textMultiplier,
+        fontSize: 3.15 * SizeConfig.textMultiplier,
         color: DefaultColors.dark,
         fontWeight: FontWeight.bold,
         margin: EdgeInsets.only(bottom: 3.25 * SizeConfig.heightMultiplier),
@@ -63,41 +63,26 @@ class BottomSheetItem extends StatelessWidget {
 
 class RiddleForm extends StatefulWidget {
   final Function done;
+  final String address;
 
-  const RiddleForm({Key key, this.done}) : super(key: key);
+  const RiddleForm({Key key, this.done, this.address}) : super(key: key);
 
   @override
-  _RiddleFormState createState() => _RiddleFormState(this.done);
+  _RiddleFormState createState() => _RiddleFormState(this.done, this.address);
 }
 
 class _RiddleFormState extends State<RiddleForm> {
-  _RiddleFormState(this.done);
+  _RiddleFormState(this.done, this.address);
 
   File _image;
   String _level = "";
-  String _address = "";
+  String address = "";
   final picker = ImagePicker();
   final Function done;
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _tipController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    getAddress();
-  }
-
-  void getAddress() async {
-    PositionArguments args = Get.arguments;
-    Coordinates coordinates = new Coordinates(args.latitude, args.longitude);
-    List<Address> addresses =
-    await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    setState(() {
-      _address = addresses.first.addressLine;
-    });
-  }
 
   void _imgFromCamera() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
@@ -142,10 +127,7 @@ class _RiddleFormState extends State<RiddleForm> {
     String title = _titleController.text.trim();
     String description = _titleController.text.trim();
     String tip = _tipController.text.trim();
-    PositionArguments args = ModalRoute
-        .of(context)
-        .settings
-        .arguments;
+    PositionArguments args = ModalRoute.of(context).settings.arguments;
 
     if (checkState(context)) {
       dio.FormData data = dio.FormData.fromMap({
@@ -162,7 +144,6 @@ class _RiddleFormState extends State<RiddleForm> {
         await Quest.add(data);
         done();
       } on dio.DioError catch (e) {
-        print(e.response);
       }
     }
   }
@@ -177,11 +158,10 @@ class _RiddleFormState extends State<RiddleForm> {
                 BottomSheetItem(
                     iconData: CupertinoIcons.photo_fill,
                     textValue: "Gallery",
-                    onTap: () =>
-                        () {
-                      Get.back();
-                      _imgFromGallery();
-                    }),
+                    onTap: () => () {
+                          Get.back();
+                          _imgFromGallery();
+                        }),
                 BottomSheetItem(
                     iconData: CupertinoIcons.photo_camera_solid,
                     textValue: "Camera",
@@ -196,7 +176,7 @@ class _RiddleFormState extends State<RiddleForm> {
   }
 
   Widget buildAddress() {
-    if (_address.length > 0)
+    if (address.length > 0)
       return Row(
         children: [
           DefaultText(
@@ -204,7 +184,7 @@ class _RiddleFormState extends State<RiddleForm> {
             fontWeight: FontWeight.bold,
           ),
           DefaultText(
-            value: _address,
+            value: address,
           )
         ],
       );
@@ -290,15 +270,15 @@ class _RiddleFormState extends State<RiddleForm> {
                     child: _image == null
                         ? DefaultText(value: 'Select an image')
                         : ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                          2.5 * SizeConfig.widthMultiplier),
-                      child: Image.file(
-                        _image,
-                        width: double.infinity,
-                        height: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                            borderRadius: BorderRadius.circular(
+                                2.5 * SizeConfig.widthMultiplier),
+                            child: Image.file(
+                              _image,
+                              width: double.infinity,
+                              height: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                   ),
                 ),
               ]),
@@ -322,8 +302,8 @@ class _RiddleFormState extends State<RiddleForm> {
                     buttonLables: radioLabels,
                     buttonValues: radioValues,
                     height: 3.25 * SizeConfig.heightMultiplier,
-                    width: 25 * SizeConfig.widthMultiplier,
-                    spacing: 1.25 * SizeConfig.widthMultiplier,
+                    width: 23 * SizeConfig.widthMultiplier,
+                    spacing: 1.15 * SizeConfig.widthMultiplier,
                     padding: 2.5 * SizeConfig.widthMultiplier,
                     unSelectedBorderColor: DefaultColors.primary,
                     buttonTextStyle: ButtonTextStyle(
@@ -367,44 +347,61 @@ class AddRiddle extends StatefulWidget {
 
 class _AddRiddleState extends State<AddRiddle> {
   bool _formSent = false;
+  String _address = "";
+
+  @override
+  void initState() {
+    super.initState();
+    getAddress();
+  }
+
+  void getAddress() async {
+    PositionArguments args = Get.arguments;
+    Coordinates coordinates = new Coordinates(args.latitude, args.longitude);
+    List<Address> addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    setState(() {
+      _address = addresses.first.addressLine;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     Widget content = _formSent
         ? SuccessView()
-        : RiddleForm(done: () {
-      setState(() {
-        _formSent = true;
-      });
-    });
+        : RiddleForm(
+            address: _address,
+            done: () {
+              setState(() {
+                _formSent = true;
+              });
+            });
     return Scaffold(
         body: SafeArea(
             child: SingleChildScrollView(
-              child: Padding(
-                padding:
-                EdgeInsets.symmetric(
-                    horizontal: 7.41 * SizeConfig.widthMultiplier),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start, children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(
-                        top: 3.68 * SizeConfig.heightMultiplier,
-                        bottom: 4.91 * SizeConfig.heightMultiplier),
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Icon(
-                        CupertinoIcons.back,
-                        color: DefaultColors.dark,
-                        size: 7.41 * SizeConfig.widthMultiplier,
-                      ),
-                    ),
-                  ),
-                  content
-                ]),
+      child: Padding(
+        padding:
+            EdgeInsets.symmetric(horizontal: 7.41 * SizeConfig.widthMultiplier),
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(
+                top: 3.68 * SizeConfig.heightMultiplier,
+                bottom: 4.91 * SizeConfig.heightMultiplier),
+            child: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Icon(
+                CupertinoIcons.back,
+                color: DefaultColors.dark,
+                size: 7.41 * SizeConfig.widthMultiplier,
               ),
-            )));
+            ),
+          ),
+          content
+        ]),
+      ),
+    )));
   }
 }
